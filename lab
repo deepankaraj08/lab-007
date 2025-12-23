@@ -1,0 +1,128 @@
+_______lab 7_________
+# open git bash
+
+1. mkdir foldername
+2. cd foldername
+3. touch pom.xml
+4. nano pom.xml
+
+<project xmlns="https://maven.apache.org/POM/4.0.0">
+<modelVersion>4.0.0</modelVersion>
+<groupId>com.example</groupId>
+<artifactId>demo</artifactId>
+<version>1.0</version>
+</project>
+
+## ctrl+o -> enter -> ctrl+x
+
+5. mvn --version
+6. mvn clean package
+
+# open vs code and open folder containing our file
+
+1. git init
+2. git config --global user.name "your_username"
+3. git config --global user.email "your_email"
+4. git add remote origin "git repo link"
+5. git add .
+6. git commit -m "first commit"
+7. git push -u origin main
+
+#open jenkins
+
+1. new items
+2. give filename and click free style
+3. source code management -> select git 
+4. paste repo url -> add new Credentials -> choose Jenkins
+5. type github username and generate new token from github settings -> developer settings -> personal tokens -> token(classic)
+6. select scopes -> tick -> workflow and write:packages -> generate token
+7. enter the generated password in jenkins and add credentials
+8. Triggers -> tick Poll SCM -> H/2 * * * *
+9. Build Steps -> Invoke top-level Maven targets && Goals -> clean package
+10. save -> build now -> console output
+
+
+_______lab 8_________
+
+everything same as above just change triggers
+
+Triggers -> tick Build periodically -> Schedule -> 0 2 * * *
+Triggers -> tick Poll SCM -> Schedule -> H/2 * * * *
+
+
+______________________lab 9 ___________________________
+
+# open git bash
+
+1. mkdir foldername
+2. cd foldername
+3. touch hello.java
+4. nano hello.java
+
+public class hello {
+        public static void main(String[] args) {
+                System.out.println("Hello from docker");
+        }
+}
+
+ctrl+o -> enter -> ctrl+x
+
+5. touch Dockerfile
+6. nano Dockerfile
+
+FROM eclipse-temurin:21
+WORKDIR /app
+COPY hello.java .
+RUN javac hello.java
+CMD ["java", "hello"]
+
+7. windows+r -> services.msc -> start docker 
+8. docker build -t hello-docker .
+9. docker run -it hello-docker
+
+
+
+______________________lab 10___________________________
+
+# open git bash
+
+1. mkdir foldername
+2. cd foldername
+3. touch loginApp.java
+4. nano loginApp.java
+
+import java.util.Scanner;
+
+public class loginApp {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter username: ");
+        String username = sc.nextLine();
+
+        System.out.print("Enter password: ");
+        String password = sc.nextLine();
+
+        if (username.equals("admin") && password.equals("1234")) {
+            System.out.println("Login Successful");
+        } else {
+            System.out.println("Access Denied");
+        }
+
+        sc.close();
+    }
+}
+
+ctrl+o -> enter + ctrl+x
+
+5. touch Dockerfile
+6. nano Dockerfile 
+
+FROM eclipse-temurin:21
+WORKDIR /app
+COPY loginApp.java .
+RUN javac loginApp.java
+CMD ["java", "LoginApp"]
+
+7. docker build -t login-app .
+8. docker run -it login-app
